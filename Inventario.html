@@ -19,6 +19,7 @@
             display: flex; 
         }
         
+        /* Sidebar simplificado */
         .sidebar { 
             width: var(--sidebar-width); 
             background: var(--dark); 
@@ -45,7 +46,6 @@
             text-decoration: none; 
             border-radius: 8px; 
             margin-bottom: 5px;
-            transition: 0.3s;
         }
         
         .nav-link.active { background: #1e293b; color: white; }
@@ -54,7 +54,6 @@
             margin-left: var(--sidebar-width); 
             padding: 40px; 
             width: 100%; 
-            min-height: 100vh;
             box-sizing: border-box;
         }
         
@@ -64,8 +63,6 @@
             align-items: center; 
             margin-bottom: 35px; 
         }
-        
-        .header h1 { margin: 0; font-size: 28px; color: var(--dark); }
         
         .stats-grid { 
             display: grid; 
@@ -78,22 +75,17 @@
             background: white; 
             padding: 25px; 
             border-radius: 12px; 
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
             border-left: 6px solid var(--primary); 
         }
-        
-        .stat-card h3 { margin: 0; font-size: 15px; color: #64748b; text-transform: uppercase; }
-        .stat-card p { margin: 12px 0 0; font-size: 32px; font-weight: 800; color: var(--dark); }
 
         .card { 
             background: white; 
             padding: 30px; 
             border-radius: 12px; 
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
             margin-bottom: 30px; 
         }
-        
-        .card h3 { margin-top: 0; margin-bottom: 20px; color: var(--dark); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
 
         .form-row { 
             display: grid; 
@@ -109,19 +101,19 @@
             padding: 12px; 
             border: 1px solid var(--border); 
             border-radius: 8px; 
-            font-size: 14px;
+            box-sizing: border-box;
         }
         
         table { width: 100%; border-collapse: collapse; }
-        th { background: #f1f5f9; padding: 15px; text-align: left; font-size: 13px; font-weight: 700; color: #475569; }
-        td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 15px; color: #334155; }
+        th { background: #f1f5f9; padding: 15px; text-align: left; color: #475569; }
+        td { padding: 15px; border-bottom: 1px solid var(--border); }
 
-        .btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 14px; }
+        .btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .btn-save { background: var(--primary); color: white; }
         .btn-edit { background: #eff6ff; color: var(--primary); margin-right: 8px; }
         .btn-del { background: #fef2f2; color: #dc2626; }
 
-        .badge-low { background: #ffedd5; color: #9a3412; padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+        .badge-low { background: #ffedd5; color: #9a3412; padding: 5px 10px; border-radius: 6px; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -131,7 +123,7 @@
     <nav style="margin-top: 30px;">
         <a href="#" class="nav-link active">📦 Inventario</a>
         <div style="position: absolute; bottom: 30px; width: calc(100% - 40px);">
-            <a href="#" onclick="logout()" class="nav-link" style="color: #f87171; border: 1px solid #450a0a;">🚪 Cerrar Sesión</a>
+            <a href="#" onclick="logout()" class="nav-link" style="color: #f87171;">🚪 Cerrar Sesión</a>
         </div>
     </nav>
 </div>
@@ -139,7 +131,7 @@
 <div class="main">
     <div class="header">
         <h1>Panel de Inventario</h1>
-        <div id="fecha" style="font-weight: 600; color: #64748b; background: white; padding: 8px 15px; border-radius: 8px; border: 1px solid var(--border);"></div>
+        <div id="fecha"></div>
     </div>
 
     <div class="stats-grid">
@@ -177,7 +169,7 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-save" id="btn-save">Guardar Producto</button>
-            <button type="button" class="btn" onclick="limpiarForm()" style="background:#f1f5f9; color: #475569; margin-left: 10px;">Cancelar</button>
+            <button type="button" class="btn" onclick="limpiarForm()" style="background:#f1f5f9; margin-left: 10px;">Cancelar</button>
         </form>
     </div>
 
@@ -205,15 +197,22 @@
 
     document.getElementById('prodForm').addEventListener('submit', function(e) {
         e.preventDefault();
+        
+        // Obtenemos valores (si están vacíos, ponemos valores por defecto para evitar errores)
         const p = {
             nombre: document.getElementById('nombre').value || "Sin nombre",
-            categoria: document.getElementById('categoria').value || "General",
+            categoria: document.getElementById('categoria').value || "Sin categoría",
             cantidad: parseInt(document.getElementById('cantidad').value) || 0,
             precio: parseFloat(document.getElementById('precio').value) || 0
         };
+
         const idx = document.getElementById('edit-index').value;
-        if(idx === "") { inventario.push(p); } 
-        else { inventario[idx] = p; }
+        if(idx === "") { 
+            inventario.push(p); 
+        } else { 
+            inventario[idx] = p; 
+        }
+        
         limpiarForm();
         actualizar();
     });
@@ -253,7 +252,6 @@
         document.getElementById('precio').value = p.precio;
         document.getElementById('edit-index').value = i;
         document.getElementById('btn-save').innerText = "Actualizar Cambios";
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function borrar(i) {
