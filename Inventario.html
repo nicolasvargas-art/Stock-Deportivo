@@ -19,15 +19,13 @@
             display: flex; 
         }
         
-        /* Sidebar - Corregido */
         .sidebar { 
             width: var(--sidebar-width); 
             background: var(--dark); 
             color: white; 
             height: 100vh; 
             position: fixed; 
-            left: 0;
-            top: 0;
+            left: 0; top: 0;
             padding: 20px; 
             box-sizing: border-box;
             z-index: 100;
@@ -51,9 +49,7 @@
         }
         
         .nav-link.active { background: #1e293b; color: white; }
-        .nav-link:hover { background: #1e293b; color: #fff; }
 
-        /* Contenido principal - Espaciado arreglado */
         .main { 
             margin-left: var(--sidebar-width); 
             padding: 40px; 
@@ -71,7 +67,6 @@
         
         .header h1 { margin: 0; font-size: 28px; color: var(--dark); }
         
-        /* Stats corregidos */
         .stats-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
@@ -87,10 +82,9 @@
             border-left: 6px solid var(--primary); 
         }
         
-        .stat-card h3 { margin: 0; font-size: 15px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card h3 { margin: 0; font-size: 15px; color: #64748b; text-transform: uppercase; }
         .stat-card p { margin: 12px 0 0; font-size: 32px; font-weight: 800; color: var(--dark); }
 
-        /* Card y Formulario */
         .card { 
             background: white; 
             padding: 30px; 
@@ -116,23 +110,16 @@
             border: 1px solid var(--border); 
             border-radius: 8px; 
             font-size: 14px;
-            transition: 0.3s;
         }
         
-        input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-        
-        /* Tabla elegante */
         table { width: 100%; border-collapse: collapse; }
-        th { background: #f1f5f9; padding: 15px; text-align: left; font-size: 13px; font-weight: 700; color: #475569; border-bottom: 2px solid var(--border); }
+        th { background: #f1f5f9; padding: 15px; text-align: left; font-size: 13px; font-weight: 700; color: #475569; }
         td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 15px; color: #334155; }
-        tr:hover { background-color: #fcfcfc; }
 
-        /* Botones */
         .btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 14px; }
         .btn-save { background: var(--primary); color: white; }
         .btn-edit { background: #eff6ff; color: var(--primary); margin-right: 8px; }
         .btn-del { background: #fef2f2; color: #dc2626; }
-        .btn:hover { transform: translateY(-1px); filter: brightness(95%); }
 
         .badge-low { background: #ffedd5; color: #9a3412; padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; }
     </style>
@@ -143,7 +130,6 @@
     <h2>SportStock 🏆</h2>
     <nav style="margin-top: 30px;">
         <a href="#" class="nav-link active">📦 Inventario</a>
-        <a href="#" class="nav-link">📉 Reportes</a>
         <div style="position: absolute; bottom: 30px; width: calc(100% - 40px);">
             <a href="#" onclick="logout()" class="nav-link" style="color: #f87171; border: 1px solid #450a0a;">🚪 Cerrar Sesión</a>
         </div>
@@ -168,12 +154,12 @@
             <input type="hidden" id="edit-index">
             <div class="form-row">
                 <div>
-                    <label>Nombre del Producto *</label>
-                    <input type="text" id="nombre" placeholder="Ej: Balón Nike" required>
+                    <label>Nombre del Producto</label>
+                    <input type="text" id="nombre" placeholder="Ej: Balón Nike">
                 </div>
                 <div>
-                    <label>Categoría *</label>
-                    <select id="categoria" required>
+                    <label>Categoría</label>
+                    <select id="categoria">
                         <option value="">Seleccione...</option>
                         <option value="Fútbol">Fútbol</option>
                         <option value="Baloncesto">Baloncesto</option>
@@ -182,12 +168,12 @@
                     </select>
                 </div>
                 <div>
-                    <label>Cantidad (Stock) *</label>
-                    <input type="number" id="cantidad" placeholder="0" required min="0">
+                    <label>Cantidad (Stock)</label>
+                    <input type="number" id="cantidad" placeholder="0">
                 </div>
                 <div>
-                    <label>Precio Unitario *</label>
-                    <input type="number" id="precio" placeholder="$" required min="0">
+                    <label>Precio Unitario</label>
+                    <input type="number" id="precio" placeholder="$">
                 </div>
             </div>
             <button type="submit" class="btn btn-save" id="btn-save">Guardar Producto</button>
@@ -213,7 +199,6 @@
 </div>
 
 <script>
-    // Se mantiene la lógica del script anterior (localStorage, funciones CRUD)
     if(localStorage.getItem('auth') !== 'true') window.location.href = 'index.html';
 
     let inventario = JSON.parse(localStorage.getItem('sport_data')) || [];
@@ -221,10 +206,10 @@
     document.getElementById('prodForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const p = {
-            nombre: document.getElementById('nombre').value,
-            categoria: document.getElementById('categoria').value,
-            cantidad: parseInt(document.getElementById('cantidad').value),
-            precio: parseFloat(document.getElementById('precio').value)
+            nombre: document.getElementById('nombre').value || "Sin nombre",
+            categoria: document.getElementById('categoria').value || "General",
+            cantidad: parseInt(document.getElementById('cantidad').value) || 0,
+            precio: parseFloat(document.getElementById('precio').value) || 0
         };
         const idx = document.getElementById('edit-index').value;
         if(idx === "") { inventario.push(p); } 
@@ -272,7 +257,7 @@
     }
 
     function borrar(i) {
-        if(confirm("¿Seguro que deseas eliminar este producto?")) {
+        if(confirm("¿Eliminar este producto?")) {
             inventario.splice(i, 1);
             actualizar();
         }
