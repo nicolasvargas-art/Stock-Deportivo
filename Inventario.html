@@ -19,7 +19,7 @@
             display: flex; 
         }
         
-        /* Sidebar */
+        
         .sidebar { 
             width: var(--sidebar-width); 
             background: var(--dark); 
@@ -50,7 +50,7 @@
         
         .nav-link.active { background: #1e293b; color: white; }
 
-        /* Contenido */
+    
         .main { 
             margin-left: var(--sidebar-width); 
             padding: 40px; 
@@ -122,10 +122,10 @@
 <div class="sidebar">
     <h2>SportStock 🏆</h2>
     <nav style="margin-top: 30px;">
-       
-        <a href="#" class="nav-link active">📦 Inventario</a>
+        <a href="#" class="nav-link active"> Inventario</a>
         
         <div style="position: absolute; bottom: 30px; width: calc(100% - 40px);">
+           
             <a href="login.html" onclick="logout()" class="nav-link" style="color: #f87171; border: 1px solid #450a0a;"> Cerrar Sesión</a>
         </div>
     </nav>
@@ -144,7 +144,7 @@
         <div class="stat-card" style="border-left-color: #f59e0b;"><h3>Stock Bajo</h3><p id="stat-alerta">0</p></div>
     </div>
 
-    <!-- Formulario (Sin campos obligatorios) -->
+    <!-- Formulario -->
     <div class="card">
         <h3>Registrar / Editar Producto</h3>
         <form id="prodForm">
@@ -197,16 +197,16 @@
 </div>
 
 <script>
-    // Verificación de sesión
-    if(localStorage.getItem('auth') !== 'true') window.location.href = 'index.html';
+  
+    if(localStorage.getItem('auth') !== 'true') {
+        window.location.href = 'login.html';
+    }
 
     let inventario = JSON.parse(localStorage.getItem('sport_data')) || [];
 
-    // Guardar o Actualizar
     document.getElementById('prodForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Se capturan valores o se asignan por defecto si están vacíos
         const p = {
             nombre: document.getElementById('nombre').value || "Sin nombre",
             categoria: document.getElementById('categoria').value || "General",
@@ -225,7 +225,6 @@
         actualizar();
     });
 
-    // Actualizar Interfaz
     function actualizar() {
         const tbody = document.getElementById('tabla-body');
         tbody.innerHTML = '';
@@ -279,6 +278,7 @@
         document.getElementById('btn-save').innerText = "Guardar Producto";
     }
 
+   
     function logout() {
         localStorage.removeItem('auth');
         window.location.href = 'login.html';
