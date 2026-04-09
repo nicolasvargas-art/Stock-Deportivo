@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>SportStock - Dashboard</title>
+    <style>
+        :root { 
+            --primary: #2563eb; 
+            --dark: #0f172a; 
+            --gray: #f8fafc; 
+            --border: #e2e8f0; 
+            --sidebar-width: 260px;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            background-color: var(--gray); 
+            margin: 0; 
+            display: flex; 
+        }
+        
+        /* Sidebar - Corregido */
+        .sidebar { 
+            width: var(--sidebar-width); 
+            background: var(--dark); 
+            color: white; 
+            height: 100vh; 
+            position: fixed; 
+            left: 0;
+            top: 0;
+            padding: 20px; 
+            box-sizing: border-box;
+            z-index: 100;
+        }
+        
+        .sidebar h2 { 
+            font-size: 22px; 
+            border-bottom: 1px solid #334155; 
+            padding-bottom: 15px; 
+            margin-top: 10px;
+        }
+        
+        .nav-link { 
+            padding: 12px; 
+            display: block; 
+            color: #94a3b8; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            margin-bottom: 5px;
+            transition: 0.3s;
+        }
+        
+        .nav-link.active { background: #1e293b; color: white; }
+        .nav-link:hover { background: #1e293b; color: #fff; }
+
+        /* Contenido principal - Espaciado arreglado */
+        .main { 
+            margin-left: var(--sidebar-width); 
+            padding: 40px; 
+            width: 100%; 
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 35px; 
+        }
+        
+        .header h1 { margin: 0; font-size: 28px; color: var(--dark); }
+        
+        /* Stats corregidos */
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 25px; 
+            margin-bottom: 40px; 
+        }
+        
+        .stat-card { 
+            background: white; 
+            padding: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
+            border-left: 6px solid var(--primary); 
+        }
+        
+        .stat-card h3 { margin: 0; font-size: 15px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card p { margin: 12px 0 0; font-size: 32px; font-weight: 800; color: var(--dark); }
+
+        /* Card y Formulario */
+        .card { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
+            margin-bottom: 30px; 
+        }
+        
+        .card h3 { margin-top: 0; margin-bottom: 20px; color: var(--dark); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+
+        .form-row { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 25px; 
+        }
+        
+        label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #475569; }
+        
+        input, select { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid var(--border); 
+            border-radius: 8px; 
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        
+        input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        
+        /* Tabla elegante */
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f1f5f9; padding: 15px; text-align: left; font-size: 13px; font-weight: 700; color: #475569; border-bottom: 2px solid var(--border); }
+        td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 15px; color: #334155; }
+        tr:hover { background-color: #fcfcfc; }
+
+        /* Botones */
+        .btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 14px; }
+        .btn-save { background: var(--primary); color: white; }
+        .btn-edit { background: #eff6ff; color: var(--primary); margin-right: 8px; }
+        .btn-del { background: #fef2f2; color: #dc2626; }
+        .btn:hover { transform: translateY(-1px); filter: brightness(95%); }
+
+        .badge-low { background: #ffedd5; color: #9a3412; padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>SportStock 🏆</h2>
+    <nav style="margin-top: 30px;">
+        <a href="#" class="nav-link active">📦 Inventario</a>
+        <a href="#" class="nav-link">📉 Reportes</a>
+        <div style="position: absolute; bottom: 30px; width: calc(100% - 40px);">
+            <a href="#" onclick="logout()" class="nav-link" style="color: #f87171; border: 1px solid #450a0a;">🚪 Cerrar Sesión</a>
+        </div>
+    </nav>
+</div>
+
+<div class="main">
+    <div class="header">
+        <h1>Panel de Inventario</h1>
+        <div id="fecha" style="font-weight: 600; color: #64748b; background: white; padding: 8px 15px; border-radius: 8px; border: 1px solid var(--border);"></div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card"><h3>Total Productos</h3><p id="stat-total">0</p></div>
+        <div class="stat-card" style="border-left-color: #10b981;"><h3>Valor Inventario</h3><p id="stat-valor">$0</p></div>
+        <div class="stat-card" style="border-left-color: #f59e0b;"><h3>Stock Bajo</h3><p id="stat-alerta">0</p></div>
+    </div>
+
+    <div class="card">
+        <h3>Registrar / Editar Producto</h3>
+        <form id="prodForm">
+            <input type="hidden" id="edit-index">
+            <div class="form-row">
+                <div>
+                    <label>Nombre del Producto *</label>
+                    <input type="text" id="nombre" placeholder="Ej: Balón Nike" required>
+                </div>
+                <div>
+                    <label>Categoría *</label>
+                    <select id="categoria" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Fútbol">Fútbol</option>
+                        <option value="Baloncesto">Baloncesto</option>
+                        <option value="Tenis">Tenis</option>
+                        <option value="Fitness">Fitness</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Cantidad (Stock) *</label>
+                    <input type="number" id="cantidad" placeholder="0" required min="0">
+                </div>
+                <div>
+                    <label>Precio Unitario *</label>
+                    <input type="number" id="precio" placeholder="$" required min="0">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-save" id="btn-save">Guardar Producto</button>
+            <button type="button" class="btn" onclick="limpiarForm()" style="background:#f1f5f9; color: #475569; margin-left: 10px;">Cancelar</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Listado General</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Stock</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-body"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Se mantiene la lógica del script anterior (localStorage, funciones CRUD)
+    if(localStorage.getItem('auth') !== 'true') window.location.href = 'index.html';
+
+    let inventario = JSON.parse(localStorage.getItem('sport_data')) || [];
+
+    document.getElementById('prodForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const p = {
+            nombre: document.getElementById('nombre').value,
+            categoria: document.getElementById('categoria').value,
+            cantidad: parseInt(document.getElementById('cantidad').value),
+            precio: parseFloat(document.getElementById('precio').value)
+        };
+        const idx = document.getElementById('edit-index').value;
+        if(idx === "") { inventario.push(p); } 
+        else { inventario[idx] = p; }
+        limpiarForm();
+        actualizar();
+    });
+
+    function actualizar() {
+        const tbody = document.getElementById('tabla-body');
+        tbody.innerHTML = '';
+        let totalVal = 0;
+        let bajoStock = 0;
+
+        inventario.forEach((p, i) => {
+            totalVal += (p.cantidad * p.precio);
+            if(p.cantidad < 5) bajoStock++;
+            tbody.innerHTML += `
+                <tr>
+                    <td><strong>${p.nombre}</strong></td>
+                    <td>${p.categoria}</td>
+                    <td><span class="${p.cantidad < 5 ? 'badge-low' : ''}">${p.cantidad} unds</span></td>
+                    <td>$${p.precio.toLocaleString()}</td>
+                    <td>
+                        <button class="btn btn-edit" onclick="editar(${i})">Editar</button>
+                        <button class="btn btn-del" onclick="borrar(${i})">Borrar</button>
+                    </td>
+                </tr>`;
+        });
+        document.getElementById('stat-total').innerText = inventario.length;
+        document.getElementById('stat-valor').innerText = '$' + totalVal.toLocaleString();
+        document.getElementById('stat-alerta').innerText = bajoStock;
+        localStorage.setItem('sport_data', JSON.stringify(inventario));
+    }
+
+    function editar(i) {
+        const p = inventario[i];
+        document.getElementById('nombre').value = p.nombre;
+        document.getElementById('categoria').value = p.categoria;
+        document.getElementById('cantidad').value = p.cantidad;
+        document.getElementById('precio').value = p.precio;
+        document.getElementById('edit-index').value = i;
+        document.getElementById('btn-save').innerText = "Actualizar Cambios";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function borrar(i) {
+        if(confirm("¿Seguro que deseas eliminar este producto?")) {
+            inventario.splice(i, 1);
+            actualizar();
+        }
+    }
+
+    function limpiarForm() {
+        document.getElementById('prodForm').reset();
+        document.getElementById('edit-index').value = "";
+        document.getElementById('btn-save').innerText = "Guardar Producto";
+    }
+
+    function logout() {
+        localStorage.removeItem('auth');
+        window.location.href = 'index.html';
+    }
+
+    document.getElementById('fecha').innerText = new Date().toLocaleDateString();
+    actualizar();
+</script>
+</body>
+</html>
