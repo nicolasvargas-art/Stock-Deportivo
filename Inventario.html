@@ -191,14 +191,14 @@
 </div>
 
 <script>
-    if(localStorage.getItem('auth') !== 'true') window.location.href = 'index.html';
+    if(localStorage.getItem('auth') !== 'true') window.location.href = 'login.html';
 
     let inventario = JSON.parse(localStorage.getItem('sport_data')) || [];
 
     document.getElementById('prodForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Obtenemos valores (si están vacíos, ponemos valores por defecto para evitar errores)
+        
         const p = {
             nombre: document.getElementById('nombre').value || "Sin nombre",
             categoria: document.getElementById('categoria').value || "Sin categoría",
