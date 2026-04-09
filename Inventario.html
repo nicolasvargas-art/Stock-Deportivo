@@ -19,7 +19,7 @@
             display: flex; 
         }
         
-        /* Sidebar simplificado */
+        /* Sidebar */
         .sidebar { 
             width: var(--sidebar-width); 
             background: var(--dark); 
@@ -50,6 +50,7 @@
         
         .nav-link.active { background: #1e293b; color: white; }
 
+        /* Contenido */
         .main { 
             margin-left: var(--sidebar-width); 
             padding: 40px; 
@@ -121,9 +122,11 @@
 <div class="sidebar">
     <h2>SportStock 🏆</h2>
     <nav style="margin-top: 30px;">
+        <!-- Se mantiene solo Inventario -->
         <a href="#" class="nav-link active">📦 Inventario</a>
+        
         <div style="position: absolute; bottom: 30px; width: calc(100% - 40px);">
-            <a href="#" onclick="logout()" class="nav-link" style="color: #f87171;"> Cerrar Sesión</a>
+            <a href="#" onclick="logout()" class="nav-link" style="color: #f87171; border: 1px solid #450a0a;"> Cerrar Sesión</a>
         </div>
     </nav>
 </div>
@@ -131,15 +134,17 @@
 <div class="main">
     <div class="header">
         <h1>Panel de Inventario</h1>
-        <div id="fecha"></div>
+        <div id="fecha" style="font-weight: 600; color: #64748b;"></div>
     </div>
 
+    <!-- Indicadores -->
     <div class="stats-grid">
         <div class="stat-card"><h3>Total Productos</h3><p id="stat-total">0</p></div>
         <div class="stat-card" style="border-left-color: #10b981;"><h3>Valor Inventario</h3><p id="stat-valor">$0</p></div>
         <div class="stat-card" style="border-left-color: #f59e0b;"><h3>Stock Bajo</h3><p id="stat-alerta">0</p></div>
     </div>
 
+    <!-- Formulario (Sin campos obligatorios) -->
     <div class="card">
         <h3>Registrar / Editar Producto</h3>
         <form id="prodForm">
@@ -173,6 +178,7 @@
         </form>
     </div>
 
+    <!-- Tabla -->
     <div class="card">
         <h3>Listado General</h3>
         <table>
@@ -191,17 +197,19 @@
 </div>
 
 <script>
-    if(localStorage.getItem('auth') !== 'true') window.location.href = 'login.html';
+    // Verificación de sesión
+    if(localStorage.getItem('auth') !== 'true') window.location.href = 'index.html';
 
     let inventario = JSON.parse(localStorage.getItem('sport_data')) || [];
 
+    // Guardar o Actualizar
     document.getElementById('prodForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
-        
+        // Se capturan valores o se asignan por defecto si están vacíos
         const p = {
             nombre: document.getElementById('nombre').value || "Sin nombre",
-            categoria: document.getElementById('categoria').value || "Sin categoría",
+            categoria: document.getElementById('categoria').value || "General",
             cantidad: parseInt(document.getElementById('cantidad').value) || 0,
             precio: parseFloat(document.getElementById('precio').value) || 0
         };
@@ -217,6 +225,7 @@
         actualizar();
     });
 
+    // Actualizar Interfaz
     function actualizar() {
         const tbody = document.getElementById('tabla-body');
         tbody.innerHTML = '';
@@ -226,6 +235,7 @@
         inventario.forEach((p, i) => {
             totalVal += (p.cantidad * p.precio);
             if(p.cantidad < 5) bajoStock++;
+            
             tbody.innerHTML += `
                 <tr>
                     <td><strong>${p.nombre}</strong></td>
@@ -238,9 +248,11 @@
                     </td>
                 </tr>`;
         });
+
         document.getElementById('stat-total').innerText = inventario.length;
         document.getElementById('stat-valor').innerText = '$' + totalVal.toLocaleString();
         document.getElementById('stat-alerta').innerText = bajoStock;
+        
         localStorage.setItem('sport_data', JSON.stringify(inventario));
     }
 
