@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sport Center</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="contenedor-principal">
+    <main class="contenido-general">
+        <header class="barra-superior">
+            <h3>Tienda Deportiva</h3>
+            <button class="btn-menu" onclick="toggleMenu()">☰</button>
+            <nav class="menu-top" id="menuTop">
+                <ul>
+                    <li onclick="cambiarVista('home'); toggleMenu(false)">Inicio</li>
+                    <li onclick="cambiarVista('productos'); toggleMenu(false)">Productos</li>
+                    <li onclick="cambiarVista('panel'); toggleMenu(false)">Panel</li>
+                    <li onclick="cambiarVista('usuarios'); toggleMenu(false)">Usuarios</li>
+                </ul>
+            </nav>
+        </header>
+        <section id="home" class="vista">
+            <h2>Bienvenido a Sport Center</h2>
+            <p>Gestiona tu inventario deportivo de manera fácil y eficiente.</p>
+        </section>
+        <section id="productos" class="vista ocultar">
+            <h2>Registro de Productos</h2>
+            <div class="formulario">
+    <input type="hidden" id="idProducto">
+    <input type="text" id="producto" placeholder="Nombre del producto">
+    <input type="number" id="stock" placeholder="Cantidad disponible">
+    <input type="number" id="precio" placeholder="Precio unitario">
+    <button type="button" onclick="guardarProducto()">Guardar</button>
+    <button type="button" onclick="limpiarFormulario()">Limpiar</button>
+            </div>
+            <div class="buscador">
+                <input type="text" id="busquedaProducto" placeholder="Buscar producto..." onkeyup="filtrarProductos()">
+            </div>
+<table class="tabla-productos" id="tabla-productos">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Stock</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="lista-productos"></tbody>
+</table>
+        </section>
+        <section id="panel" class="vista ocultar">
+            <h2>Panel Administrativo</h2>
+
+            <div class="tarjetas">
+    <div class="tarjeta">
+        <h4>Productos</h4>
+        <p id="total-productos">0</p>
+    </div>
+
+    <div class="tarjeta">
+        <h4>Stock total</h4>
+        <p id="stock-total">0</p>
+    </div>
+
+    <div class="tarjeta">
+        <h4>Usuarios</h4>
+        <p id="total-usuarios">0</p>
+    </div>
+
+    <div class="tarjeta">
+        <h4>Valor inventario</h4>
+        <p id="valor-inventario">0</p>
+    </div>
+</div>
+            <h3>Inventario Actual</h3>
+            <ul id="panel-lista"></ul>
+        </section>
+        <section id="usuarios" class="vista ocultar">
+            <h2>Gestión de Usuarios</h2>
+            <div class="formulario">
+                <input type="hidden" id="idUsuario">
+                <input type="text" id="nombreUsuario" placeholder="Nombre del usuario">
+                <input type="email" id="correoUsuario" placeholder="Correo del usuario">
+                <input type="text" id="rolUsuario" placeholder="Rol (Administrador, Vendedor, etc.)">
+                <input type="password" id="claveUsuario" placeholder="Contraseña del usuario">
+                <button type="button" onclick="guardarUsuario()">Guardar</button>
+                <button type="button" onclick="limpiarFormularioUsuario()">Limpiar</button>
+            </div>
+            <div class="buscador">
+                <input type="text" id="busquedaUsuario" placeholder="Buscar usuario..." onkeyup="filtrarUsuarios()">
+            </div>
+            <table class="tabla-productos" id="tabla-usuarios">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-usuarios"></tbody>
+            </table>
+        </section>
+    </main>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

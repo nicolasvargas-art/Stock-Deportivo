@@ -1,0 +1,351 @@
+/* ===========================
+   1. RESETEO BÁSICO
+   - Quita márgenes/paddings por defecto
+   - Aplica la misma fuente a toda la app
+   =========================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* ===========================
+   2. ESTILOS GENERALES DEL BODY
+   - Fondo gris claro para el dashboard
+   - Altura mínima para ocupar pantalla completa
+   =========================== */
+body {
+    min-height: 100vh;
+    background-color: #f4f4f4;
+}
+
+/* ===========================
+   3. PANTALLA DE LOGIN
+   - Fondo con imagen
+   - Caja centrada con formulario
+   =========================== */
+
+/* Fondo del login con imagen de fondo */
+.fondo-login {
+    background: url("foto1.jpg") no-repeat center center / cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor del formulario de login */
+.caja-login {
+    background: white;
+    width: 320px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Título del login */
+.caja-login h2 {
+    color: #1d3557;
+    margin-bottom: 8px;
+}
+
+/* Subtítulo del login */
+.subtitulo {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* Inputs del formulario de login */
+.caja-login input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+}
+
+/* Efecto al enfocar los inputs de login */
+.caja-login input:focus {
+    border-color: #457b9d;
+}
+
+/* Botón de enviar del login */
+.caja-login button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #1d3557;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Hover del botón de login */
+.caja-login button:hover {
+    background: #457b9d;
+}
+
+/* Mensaje de error o éxito en login */
+#texto {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #d90429;
+}
+
+/* ===========================
+   4. LAYOUT DEL DASHBOARD
+   - Contenedor principal del contenido
+   =========================== */
+
+/* Contenedor que envuelve el dashboard (dentro de <body>) */
+.contenedor-principal {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Contenido central del dashboard */
+.contenido-general {
+    flex: 1;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+/* ===========================
+   5. HEADER DEL DASHBOARD
+   - Barra superior con título y menú hamburguesa
+   =========================== */
+
+/* Barra superior blanca con sombra */
+.barra-superior {
+    position: relative; /* necesario para posicionar el menú desplegable */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    padding: 0.6rem 0.9rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+    margin-bottom: 20px;
+}
+
+/* Botón hamburguesa (☰) */
+.btn-menu {
+    display: block;
+    background: transparent;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: #111827;
+    padding: 0.1rem 0.6rem;
+    border-radius: 0.5rem;
+    transition: background 0.15s, transform 0.1s;
+}
+
+/* Efecto hover del botón hamburguesa */
+.btn-menu:hover {
+    background: rgba(15, 23, 42, 0.06);
+    transform: translateY(-1px);
+}
+
+/* Menú desplegable que aparece al hacer clic en el botón hamburguesa */
+.menu-top {
+    display: none;               /* oculto por defecto */
+    position: absolute;
+    top: 100%;                   /* justo debajo del header */
+    right: 0.75rem;
+    background: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
+    z-index: 100;
+    padding: 0.35rem 0;
+    min-width: 180px;
+}
+
+/* Clase que se añade desde JS para mostrar el menú */
+.menu-top.visible,
+.menu-top.abierto {
+    display: block;
+}
+
+/* Lista de opciones dentro del menú */
+.menu-top ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Cada opción del menú */
+.menu-top ul li {
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #374151;
+    transition: background 0.15s, color 0.15s;
+}
+
+/* Efecto hover en las opciones del menú */
+.menu-top ul li:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+/* ===========================
+   6. VISTAS DEL DASHBOARD
+   - Tarjetas que cambian con el menú (home, productos, panel, usuarios)
+   =========================== */
+
+/* Caja blanca de cada vista */
+.vista {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Clase para ocultar vistas que no están activas */
+.ocultar {
+    display: none;
+}
+
+/* Título principal de la vista home */
+#home h2 {
+    margin-bottom: 10px;
+}
+
+/* ===========================
+   7. FORMULARIOS (productos y usuarios)
+   - Inputs y botones para CRUD
+   =========================== */
+
+/* Contenedor de los inputs y botones */
+.formulario {
+    margin: 15px 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Inputs de formularios del dashboard */
+.formulario input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* Botones de formularios del dashboard */
+.formulario button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #1d3557;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* Hover en botones de formularios */
+.formulario button:hover {
+    background-color: #457b9d;
+}
+
+/* Contenedor de los inputs de búsqueda */
+.buscador {
+    margin: 8px 0 4px;
+}
+
+/* Input de búsqueda en tablas */
+.buscador input {
+    padding: 8px 10px;
+    width: 100%;
+    max-width: 320px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+}
+
+/* ===========================
+   8. TABLAS (productos y usuarios)
+   - Listado editable con botones de acción
+   =========================== */
+
+/* Estilos generales de tablas */
+.tabla-productos {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+/* Celdas de tablas */
+.tabla-productos th,
+.tabla-productos td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+/* Encabezado de tablas */
+.tabla-productos th {
+    background-color: #f1f1f1;
+}
+
+/* Botones de acción (editar / eliminar) */
+.btn-accion {
+    padding: 4px 8px;
+    margin-right: 4px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+/* Botón editar en las tablas */
+.btn-editar {
+    background-color: #ffb703;
+    color: #000;
+}
+
+/* Botón eliminar en las tablas */
+.btn-eliminar {
+    background-color: #d90429;
+    color: #fff;
+}
+
+/* ===========================
+   9. PANEL RESUMEN
+   - Tarjetas con totales y lista del inventario
+   =========================== */
+
+/* Contenedor de las tarjetas del panel */
+.tarjetas {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+/* Cada tarjeta (productos, stock, usuarios) */
+.tarjeta {
+    flex: 1;
+    min-width: 130px;
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Lista de inventario en el panel */
+#panel-lista {
+    margin-top: 10px;
+    list-style: none;
+}
+
+/* Elementos de la lista en el panel */
+#panel-lista li {
+    padding: 6px 8px;
+    border-bottom: 1px solid #eee;
+} 

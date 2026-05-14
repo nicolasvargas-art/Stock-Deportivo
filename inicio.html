@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingreso Sport Center</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="fondo-login">
+
+    <div class="caja-login">
+        <h2>Stock Deportivo</h2>
+        <p class="subtitulo">Ingresa tus datos para continuar</p>
+
+        <form onsubmit="return validarIngreso()">
+            <input type="email" id="correo" placeholder="Correo">
+            <input type="password" id="clave" placeholder="Contraseña">
+
+            <button type="submit">Entrar</button>
+
+            <p id="texto"></p>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
