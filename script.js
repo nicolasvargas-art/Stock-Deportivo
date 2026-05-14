@@ -9,44 +9,41 @@ let usuarios = [];
 let usuarioActual = null;
 
 // ==== Login ====
-function validarIngreso() {
-  const correo = $("correo").value.trim();
-  const clave  = $("clave").value.trim();
-  const texto  = $("texto");
+async function validarIngreso() {
+  const correo = document.getElementById('correo').value;
+  const clave  = document.getElementById('clave').value;
 
   if (!correo || !clave) {
-    texto.style.color = "red";
-    texto.textContent = "Por favor completa todos los campos.";
-    return false;
-  }
-  if (!correo.includes("@") || !correo.includes(".")) {
-    texto.style.color = "red";
-    texto.textContent = "Ingresa un correo válido.";
-    return false;
+    alert('Por favor ingresa correo y clave');
+    return;
   }
 
-  usuarios = leerJSON("usuarios");
-  if (!usuarios.length) {
-    texto.style.color = "red";
-    texto.textContent = "No hay usuarios registrados en el sistema.";
-    return false;
+  try {
+    const respuesta = await fetch('http://localhost:8080/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        correo: correo,
+        clave: clave
+      })
+    });
+
+    if (respuesta.ok) {
+      const usuario = await respuesta.json();
+      localStorage.setItem('usuarioLogueado', JSON.stringify(usuario));
+      alert('Ingreso exitoso, bienvenido ' + usuario.nombre);
+      window.location.href = 'dashboard.html';
+    } else if (respuesta.status === 401) {
+      alert('Correo o clave incorrectos');
+    } else {
+      alert('Error en el servidor: ' + respuesta.status);
+    }
+  } catch (error) {
+    console.error(error);
+    alert('No se pudo conectar con el servidor');
   }
-
-  const u = usuarios.find(x => x.correo === correo && x.clave === clave);
-  if (!u) {
-    texto.style.color = "red";
-    texto.textContent = "Correo o contraseña incorrectos.";
-    return false;
-  }
-
-  localStorage.setItem("usuarioLogueado", JSON.stringify({
-    id: u.id, nombre: u.nombre, correo: u.correo, rol: u.rol
-  }));
-
-  texto.style.color = "green";
-  texto.textContent = "Ingreso correcto. Redirigiendo...";
-  setTimeout(() => location.href = "dashboard.html", 800);
-  return false;
 }
 
 // ==== Inicialización (login o dashboard) ====
