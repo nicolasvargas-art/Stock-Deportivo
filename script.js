@@ -8,14 +8,17 @@ let inventario = [];
 let usuarios = [];
 let usuarioActual = null;
 
-// ==== Login ====
-async function validarIngreso() {
+// ==== Login (BACKEND) ====
+async function validarIngreso(ev) {
+  
+  if (ev) ev.preventDefault();
+
   const correo = document.getElementById('correo').value;
   const clave  = document.getElementById('clave').value;
 
   if (!correo || !clave) {
     alert('Por favor ingresa correo y clave');
-    return;
+    return false;
   }
 
   try {
@@ -24,42 +27,68 @@ async function validarIngreso() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        correo: correo,
-        clave: clave
-      })
+      body: JSON.stringify({ correo, clave })
     });
 
     if (respuesta.ok) {
       const usuario = await respuesta.json();
+      // Guardar usuario logueado
       localStorage.setItem('usuarioLogueado', JSON.stringify(usuario));
       alert('Ingreso exitoso, bienvenido ' + usuario.nombre);
+      // Redirigir a dashboard
       window.location.href = 'dashboard.html';
+      return false;
     } else if (respuesta.status === 401) {
       alert('Correo o clave incorrectos');
+      return false;
     } else {
       alert('Error en el servidor: ' + respuesta.status);
+      return false;
     }
   } catch (error) {
     console.error(error);
     alert('No se pudo conectar con el servidor');
+    return false;
+  }
+}
+
+// ==== Cargar usuarios desde la API ====
+async function cargarUsuariosDesdeApi() {
+  try {
+    const resp = await fetch('http://localhost:8080/api/usuarios');
+    if (!resp.ok) {
+      console.error('Error HTTP al cargar usuarios:', resp.status);
+      return;
+    }
+    usuarios = await resp.json();
+  } catch (e) {
+    console.error('Error al conectar con la API de usuarios', e);
   }
 }
 
 // ==== Inicialización (login o dashboard) ====
-window.onload = () => {
+window.onload = async () => {
   const esDashboard = !!$("menuTop");
 
-  inventario    = leerJSON("inventario");
-  usuarios      = leerJSON("usuarios");
+  // Inventario sigue en localStorage
+  inventario = leerJSON("inventario");
+
+  // Usuario actual, leído del login previo
   usuarioActual = JSON.parse(localStorage.getItem("usuarioLogueado") || "null");
 
-  if (!esDashboard) return;
-
-  if (!usuarioActual) {
-    location.href = "inicio.html"; // nombre de tu login
+  if (!esDashboard) {
+   
     return;
   }
+
+  if (!usuarioActual) {
+    // Si no hay usuario logueado, envía a login
+    location.href = "inicio.html";
+    return;
+  }
+
+  
+  await cargarUsuariosDesdeApi();
 
   renderizarProductos();
   renderizarUsuarios();
@@ -89,7 +118,7 @@ function cambiarVista(id) {
   if (vista) vista.classList.remove("ocultar");
 }
 
-// ==== Productos (CRUD + búsqueda + precio) ====
+// ==== Productos (solo localStorage de momento) ====
 function limpiarFormulario() {
   ["idProducto", "producto", "stock", "precio"].forEach(id => { const el = $(id); if (el) el.value = ""; });
 }
@@ -187,13 +216,15 @@ function filtrarProductos() {
   });
 }
 
-// ==== Usuarios (CRUD + búsqueda + rol + clave) ====
+// ==== Usuarios (lista desde API, edición local de momento) ====
 function limpiarFormularioUsuario() {
   ["idUsuario", "nombreUsuario", "correoUsuario", "rolUsuario", "claveUsuario"]
     .forEach(id => { const el = $(id); if (el) el.value = ""; });
 }
 
 function guardarUsuario() {
+  // OJO: ahora mismo esto solo actualiza el arreglo local y localStorage
+  // En el futuro lo cambiamos para llamar POST/PUT a la API /api/usuarios
   const id     = $("idUsuario").value;
   const nombre = $("nombreUsuario").value.trim();
   const correo = $("correoUsuario").value.trim();
@@ -210,6 +241,7 @@ function guardarUsuario() {
     usuarios.push({ id: Date.now(), nombre, correo, rol, clave });
   }
 
+  // Esto ya no sincroniza con la BD; solo localStorage
   guardarJSON("usuarios", usuarios);
   renderizarUsuarios();
   actualizarPanel();
