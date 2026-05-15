@@ -85,8 +85,9 @@ function limpiarFormulario() {
 async function guardarProducto() {
   const id     = $('idProducto').value;
   const nombre = $('producto').value.trim();
-  const stock  = parseInt($('stock').value.trim());
+  const stock  = parseInt(($('stock').value || '').trim());
   const precio = parseFloat(($('precio')?.value || '').trim());
+
   if (!nombre || isNaN(stock) || isNaN(precio)) {
     alert('Completa nombre, stock y precio (números).');
     return;
@@ -95,7 +96,9 @@ async function guardarProducto() {
     alert('Stock y precio deben ser positivos.');
     return;
   }
+
   const p = { nombre, stock, precio };
+
   try {
     let r;
     if (id) {
@@ -130,19 +133,29 @@ function renderizarProductos() {
   const cuerpo = $('lista-productos');
   const panel  = $('panel-lista');
   if (!cuerpo || !panel) return;
+
   cuerpo.innerHTML = '';
   panel.innerHTML  = '';
+
   inventario.forEach(prod => {
     const tr = document.createElement('tr');
-    const tdNombre = document.createElement('td'); tdNombre.textContent = prod.nombre;
-    const tdStock  = document.createElement('td'); tdStock.textContent  = prod.stock;
-    const tdPrecio = document.createElement('td'); tdPrecio.textContent = prod.precio != null ? `$ ${prod.precio.toFixed(2)}` : '$ 0.00';
-    const tdAcc    = document.createElement('td');
+
+    const tdNombre = document.createElement('td');
+    tdNombre.textContent = prod.nombre;
+
+    const tdStock  = document.createElement('td');
+    tdStock.textContent  = prod.stock;
+
+    const tdPrecio = document.createElement('td');
+    tdPrecio.textContent = prod.precio != null ? `$ ${prod.precio.toFixed(2)}` : '$ 0.00';
+
+    const tdAcc = document.createElement('td');
     const bE = document.createElement('button');
     bE.textContent = 'Editar';
     bE.className   = 'btn-accion btn-editar';
     bE.onclick     = () => editarProducto(prod.id);
     tdAcc.appendChild(bE);
+
     if (!usuarioActual || usuarioActual.rol === 'Administrador') {
       const bD = document.createElement('button');
       bD.textContent = 'Eliminar';
@@ -150,8 +163,10 @@ function renderizarProductos() {
       bD.onclick     = () => eliminarProducto(prod.id);
       tdAcc.appendChild(bD);
     }
+
     tr.append(tdNombre, tdStock, tdPrecio, tdAcc);
     cuerpo.appendChild(tr);
+
     const li = document.createElement('li');
     const valor = (prod.precio || 0) * prod.stock;
     li.textContent = `${prod.nombre} - Stock: ${prod.stock} - Precio: $${(prod.precio || 0).toFixed(2)} - Valor: $${valor.toFixed(2)}`;
@@ -162,6 +177,7 @@ function renderizarProductos() {
 function editarProducto(id) {
   const p = inventario.find(x => x.id === id);
   if (!p) return;
+
   cambiarVista('productos');
   $('idProducto').value = p.id;
   $('producto').value   = p.nombre;
@@ -171,6 +187,7 @@ function editarProducto(id) {
 
 async function eliminarProducto(id) {
   if (!confirm('¿Deseas eliminar este producto?')) return;
+
   try {
     const r = await fetch(`http://localhost:8080/api/productos/${id}`, { method: 'DELETE' });
     if (r.status !== 204 && r.status !== 200) {
@@ -206,15 +223,32 @@ async function guardarUsuario() {
   const correo = $('correoUsuario').value.trim();
   const rol    = $('rolUsuario').value.trim();
   const clave  = ($('claveUsuario')?.value || '').trim();
+
   if (!nombre || !correo || !rol || !clave) {
     alert('Completa todos los campos del usuario.');
     return;
   }
+
   if (!correo.includes('@') || !correo.includes('.')) {
     alert('Correo de usuario no válido.');
     return;
   }
-  const u = { nombre, correo, rol, clave };
+
+  const rolNormalizado = rol.toLowerCase();
+  if (rolNormalizado !== 'vendedor' && rolNormalizado !== 'administrador') {
+    alert('El rol debe ser "Vendedor" o "Administrador".');
+    return;
+  }
+
+  const rolFinal = rolNormalizado === 'vendedor' ? 'Vendedor' : 'Administrador';
+
+  if (clave.length < 6) {
+    alert('La contraseña debe tener mínimo 6 caracteres.');
+    return;
+  }
+
+  const u = { nombre, correo, rol: rolFinal, clave };
+
   try {
     let r;
     if (id) {
@@ -248,26 +282,39 @@ async function guardarUsuario() {
 function renderizarUsuarios() {
   const cuerpo = $('lista-usuarios');
   if (!cuerpo) return;
+
   cuerpo.innerHTML = '';
+
   usuarios.forEach(u => {
     const tr = document.createElement('tr');
-    const tdNombre = document.createElement('td'); tdNombre.textContent = u.nombre;
-    const tdCorreo = document.createElement('td'); tdCorreo.textContent = u.correo;
-    const tdRol    = document.createElement('td'); tdRol.textContent    = u.rol;
-    const tdAcc    = document.createElement('td');
+
+    const tdNombre = document.createElement('td');
+    tdNombre.textContent = u.nombre;
+
+    const tdCorreo = document.createElement('td');
+    tdCorreo.textContent = u.correo;
+
+    const tdRol = document.createElement('td');
+    tdRol.textContent = u.rol;
+
+    const tdAcc = document.createElement('td');
+
     if (!usuarioActual || usuarioActual.rol === 'Administrador') {
       const bE = document.createElement('button');
       bE.textContent = 'Editar';
       bE.className   = 'btn-accion btn-editar';
       bE.onclick     = () => editarUsuario(u.id);
+
       const bD = document.createElement('button');
       bD.textContent = 'Eliminar';
       bD.className   = 'btn-accion btn-eliminar';
       bD.onclick     = () => eliminarUsuario(u.id);
+
       tdAcc.append(bE, bD);
     } else {
       tdAcc.textContent = 'Sin permisos';
     }
+
     tr.append(tdNombre, tdCorreo, tdRol, tdAcc);
     cuerpo.appendChild(tr);
   });
@@ -276,6 +323,7 @@ function renderizarUsuarios() {
 function editarUsuario(id) {
   const u = usuarios.find(x => x.id === id);
   if (!u) return;
+
   cambiarVista('usuarios');
   $('idUsuario').value     = u.id;
   $('nombreUsuario').value = u.nombre;
@@ -286,6 +334,7 @@ function editarUsuario(id) {
 
 async function eliminarUsuario(id) {
   if (!confirm('¿Deseas eliminar este usuario?')) return;
+
   try {
     const r = await fetch(`http://localhost:8080/api/usuarios/${id}`, { method: 'DELETE' });
     if (r.status !== 204 && r.status !== 200) {
@@ -303,7 +352,7 @@ async function eliminarUsuario(id) {
 }
 
 function filtrarUsuarios() {
-  const q = $('busquedaUsuario').value.toLowerCase();
+  const q = $('busquedaUsuario')?.value.toLowerCase() || '';
   document.querySelectorAll('#lista-usuarios tr').forEach(f => {
     const nombre = f.cells[0].textContent.toLowerCase();
     const correo = f.cells[1].textContent.toLowerCase();
@@ -327,6 +376,7 @@ function actualizarPanel() {
   const stockTotal      = inventario.reduce((s, p) => s + (p.stock || 0), 0);
   const totalUsuarios   = usuarios.length;
   const valorInventario = inventario.reduce((s, p) => s + (p.precio || 0) * (p.stock || 0), 0);
+
   if ($('total-productos'))  $('total-productos').textContent  = totalProductos;
   if ($('stock-total'))      $('stock-total').textContent      = stockTotal;
   if ($('total-usuarios'))   $('total-usuarios').textContent   = totalUsuarios;
