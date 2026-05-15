@@ -10,14 +10,15 @@
 <div class="contenedor-principal">
   <main class="contenido-general">
     <header class="barra-superior">
-      <h3>Tienda Deportiva</h3>
-      <button class="btn-menu" onclick="toggleMenu()">☰</button>
+      <h3>Tienda Deportiva</h3> 
+      <button class="btn-menu" type="button">☰</button>
+
       <nav class="menu-top" id="menuTop">
         <ul>
-          <li onclick="cambiarVista('home'); toggleMenu(false)">Inicio</li>
-          <li onclick="cambiarVista('productos'); toggleMenu(false)">Productos</li>
-          <li onclick="cambiarVista('panel'); toggleMenu(false)">Panel</li>
-          <li onclick="cambiarVista('usuarios'); toggleMenu(false)">Usuarios</li>
+          <li onclick="cambiarVista('home')">Inicio</li>
+          <li onclick="cambiarVista('productos')">Productos</li>
+          <li onclick="cambiarVista('panel')">Panel</li>
+          <li onclick="cambiarVista('usuarios')">Usuarios</li>
         </ul>
       </nav>
     </header>
@@ -94,10 +95,6 @@
         <input type="password" id="claveUsuario" placeholder="Contraseña del usuario">
         <button type="button" onclick="guardarUsuario()">Guardar</button>
         <button type="button" onclick="limpiarFormularioUsuario()">Limpiar</button>
-      </div>
-
-      <div class="buscador">
-        <input type="text" id="busquedaUsuario" placeholder="Buscar usuario..." onkeyup="filtrarUsuarios()">
       </div>
 
       <table class="tabla-productos" id="tabla-usuarios">
