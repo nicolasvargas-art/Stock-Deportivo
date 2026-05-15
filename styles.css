@@ -1,304 +1,247 @@
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+ * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-/
 body {
-    min-height: 100vh;
-    background-color: #f4f4f4;
+  min-height: 100vh;
+  background-color: #f4f4f4;
 }
 
 .fondo-login {
-    background: url("foto1.jpg") no-repeat center center / cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background: url("foto1.jpg") no-repeat center center / cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 
 .caja-login {
-    background: white;
-    width: 320px;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    text-align: center;
+  background: white;
+  width: 320px;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
-
 .caja-login h2 {
-    color: #1d3557;
-    margin-bottom: 8px;
+  color: #1d3557;
+  margin-bottom: 8px;
 }
 
 .subtitulo {
-    color: #666;
-    font-size: 14px;
-    margin-bottom: 20px;
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
 }
-
 
 .caja-login input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    outline: none;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
 }
-
 
 .caja-login input:focus {
-    border-color: #457b9d;
+  border-color: #457b9d;
 }
-
 
 .caja-login button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background: #1d3557;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #1d3557;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
 }
-
 
 .caja-login button:hover {
-    background: #457b9d;
+  background: #457b9d;
 }
-
 
 #texto {
-    margin-top: 12px;
-    font-size: 14px;
-    color: #d90429;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #d90429;
 }
-
 
 .contenedor-principal {
-    display: flex;
-    min-height: 100vh;
+  display: flex;
+  min-height: 100vh;
 }
-
 
 .contenido-general {
-    flex: 1;
-    padding: 20px;
-    background-color: #f8f9fa;
+  flex: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
 }
-
 
 .barra-superior {
-    position: relative; 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #ffffff;
-    padding: 0.6rem 0.9rem;
-    border-radius: 0.75rem;
-    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 0.6rem 0.9rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+  margin-bottom: 20px;
+  gap: 1rem;
 }
-
 
 .btn-menu {
-    display: block;
-    background: transparent;
-    border: none;
-    font-size: 1.6rem;
-    cursor: pointer;
-    color: #111827;
-    padding: 0.1rem 0.6rem;
-    border-radius: 0.5rem;
-    transition: background 0.15s, transform 0.1s;
+  background: transparent;
+  border: none;
+  font-size: 1.6rem;
+  cursor: default;
+  color: #111827;
+  padding: 0.1rem 0.6rem;
 }
-
-/* Efecto hover del botón hamburguesa */
-.btn-menu:hover {
-    background: rgba(15, 23, 42, 0.06);
-    transform: translateY(-1px);
-}
-
 
 .menu-top {
-    display: none;               
-    position: absolute;
-    top: 100%;                   
-    right: 0.75rem;
-    background: #ffffff;
-    border-radius: 0.75rem;
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
-    z-index: 100;
-    padding: 0.35rem 0;
-    min-width: 180px;
 }
-
-
-.menu-top.visible,
-.menu-top.abierto {
-    display: block;
-}
-
 
 .menu-top ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
 }
-
 
 .menu-top ul li {
-    padding: 0.6rem 1rem;
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: #374151;
-    transition: background 0.15s, color 0.15s;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #374151;
+  border-radius: 0.5rem;
+  transition: background 0.15s, color 0.15s;
 }
-
 
 .menu-top ul li:hover {
-    background: #f3f4f6;
-    color: #111827;
+  background: #f3f4f6;
+  color: #111827;
 }
-
 
 .vista {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
-
 
 .ocultar {
-    display: none;
+  display: none;
 }
-
 
 #home h2 {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
-
 
 .formulario {
-    margin: 15px 0;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+  margin: 15px 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-
 
 .formulario input {
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
-
 
 .formulario button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    background-color: #1d3557;
-    color: #fff;
-    cursor: pointer;
-    transition: 0.2s;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #1d3557;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s;
 }
-
 
 .formulario button:hover {
-    background-color: #457b9d;
+  background-color: #457b9d;
 }
 
-
 .buscador {
-    margin: 8px 0 4px;
+  margin: 8px 0 4px;
 }
 
 .buscador input {
-    padding: 8px 10px;
-    width: 100%;
-    max-width: 320px;
-    border-radius: 8px;
-    border: 1px solid #d1d5db;
-    font-size: 14px;
+  padding: 8px 10px;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
 }
-
 
 .tabla-productos {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
 }
-
 
 .tabla-productos th,
 .tabla-productos td {
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-    text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
 }
-
 
 .tabla-productos th {
-    background-color: #f1f1f1;
+  background-color: #f1f1f1;
 }
-
 
 .btn-accion {
-    padding: 4px 8px;
-    margin-right: 4px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
+  padding: 4px 8px;
+  margin-right: 4px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
 }
-
 
 .btn-editar {
-    background-color: #ffb703;
-    color: #000;
+  background-color: #ffb703;
+  color: #000;
 }
-
 
 .btn-eliminar {
-    background-color: #d90429;
-    color: #fff;
+  background-color: #d90429;
+  color: #fff;
 }
-
 
 .tarjetas {
-    display: flex;
-    gap: 10px;
-    margin: 15px 0;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+  flex-wrap: wrap;
 }
-
 
 .tarjeta {
-    flex: 1;
-    min-width: 130px;
-    background-color: #e9ecef;
-    padding: 10px;
-    border-radius: 8px;
-    text-align: center;
+  flex: 1;
+  min-width: 130px;
+  background-color: #e9ecef;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
 }
-
 
 #panel-lista {
-    margin-top: 10px;
-    list-style: none;
+  margin-top: 10px;
+  list-style: none;
 }
 
-
 #panel-lista li {
-    padding: 6px 8px;
-    border-bottom: 1px solid #eee;
-} 
+  padding: 6px 8px;
+  border-bottom: 1px solid #eee;
+}
