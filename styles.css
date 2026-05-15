@@ -1,4 +1,4 @@
- * {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -79,7 +79,7 @@ body {
 
 .contenido-general {
   flex: 1;
-  padding: 20px;
+  padding: 20px 20px 20px 180px;
   background-color: #f8f9fa;
 }
 
@@ -92,31 +92,39 @@ body {
   border-radius: 0.75rem;
   box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
   margin-bottom: 20px;
-  gap: 1rem;
+}
+
+.barra-superior h3 {
+  margin: 0;
 }
 
 .btn-menu {
   background: transparent;
   border: none;
   font-size: 1.6rem;
-  cursor: default;
+  cursor: pointer;
   color: #111827;
   padding: 0.1rem 0.6rem;
 }
 
-.menu-top {
+.menu-lateral {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  width: 130px;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+  padding: 10px;
 }
 
-.menu-top ul {
+.menu-lateral ul {
   list-style: none;
-  display: flex;
-  gap: 1rem;
-  margin: 0;
-  padding: 0;
 }
 
-.menu-top ul li {
-  padding: 0.4rem 0.8rem;
+.menu-lateral ul li {
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 0.25rem;
   cursor: pointer;
   font-size: 0.95rem;
   color: #374151;
@@ -124,7 +132,7 @@ body {
   transition: background 0.15s, color 0.15s;
 }
 
-.menu-top ul li:hover {
+.menu-lateral ul li:hover {
   background: #f3f4f6;
   color: #111827;
 }
@@ -151,7 +159,8 @@ body {
   flex-wrap: wrap;
 }
 
-.formulario input {
+.formulario input,
+.formulario select {
   padding: 8px;
   border-radius: 6px;
   border: 1px solid #ccc;
